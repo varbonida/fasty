@@ -1,9 +1,46 @@
-#
-version: 2.1
-orbs:
-  cypress: cypress-io/cypress@1.0.0
-workflows:
+# 
+# version: 2.1
+# orbs:
+#   cypress: cypress-io/cypress@1.0.0
+# workflows:
+#   build:
+#     jobs:
+#       - cypress/run:
+#           executor: cypress/base-8
+
+install-foxxy: &install-foxxy
+  name: Install needed tools
+  command: |
+    npm install foxxy -g
+    npm install foxx-cli -g
+    echo -e "[server.foxxy]\nurl=http://localhost:8529\nusername=root\npassword=\n\n[server.fasty]\nurl=http://localhost:8530\nusername=root\npassword=password" >> ~/.foxxrc
+
+install-dc: &install-dc
+  name: Install docker compose
+  command: |
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+
+prepare-db: &prepare-db
+  name: Prepare DB
+  command: |
+    echo 'db._createDatabase("db_demo");' | arangosh
+    foxxy upgrade settings --server fasty --database db_demo
+    foxxy upgrade --server fasty --database db_demo
+    
+version: 2
+jobs:
   build:
-    jobs:
-      - cypress/run:
-          executor: cypress/base-8
+    docker:
+      - image: circleci/node:13.3.0
+    steps:
+      - checkout
+      - run: *install-foxxy
+      - run: *install-dc
+      - setup_remote_docker
+      - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
+      - run: docker-compose build
+      - run: docker-compose run --rm cms moonc **/*.moon
+      - run: docker-compose up
+      - run: *prepare-db
+      - run: echo 'test'
