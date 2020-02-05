@@ -33,6 +33,6 @@ jobs:
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
       - run: docker-compose build
       # - run: docker-compose run --rm cms moonc -w **/*.moon
-      - run: docker-compose up
+      - run: docker-compose up -d
       - run: *prepare-db
       - run: echo 'test'
