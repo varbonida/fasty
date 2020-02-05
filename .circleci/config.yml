@@ -8,13 +8,6 @@
 #       - cypress/run:
 #           executor: cypress/base-8
 
-install-foxxy: &install-foxxy
-  name: Install needed tools
-  command: |
-    npm install foxxy -g
-    npm install foxx-cli -g
-    echo -e "[server.foxxy]\nurl=http://localhost:8529\nusername=root\npassword=\n\n[server.fasty]\nurl=http://localhost:8530\nusername=root\npassword=password" >> ~/.foxxrc
-
 install-dc: &install-dc
   name: Install docker compose
   command: |
@@ -32,13 +25,12 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:13.3.0
+      - image: varbonida/foxxy
     steps:
       - checkout
-      - run: *install-foxxy
-      - run: *install-dc
-      - setup_remote_docker
+      - run: echo -e "[server.foxxy]\nurl=http://localhost:8529\nusername=root\npassword=\n\n[server.fasty]\nurl=http://localhost:8530\nusername=root\npassword=password" >> ~/.foxxrc
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
+      - setup_remote_docker
       - run: docker-compose build
       - run: docker-compose run --rm cms moonc **/*.moon
       - run: docker-compose up
