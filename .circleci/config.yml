@@ -25,10 +25,9 @@ version: 2
 jobs:
   build:
     docker:
-      - image: varbonida/foxxy
+      - image: varbonida/foxxy:0.2
     steps:
       - checkout
-      - run: echo -e "[server.foxxy]\nurl=http://localhost:8529\nusername=root\npassword=\n\n[server.fasty]\nurl=http://localhost:8530\nusername=root\npassword=password" >> ~/.foxxrc
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
       - setup_remote_docker
       - run: docker-compose build
