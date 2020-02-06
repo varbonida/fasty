@@ -50,6 +50,12 @@ jobs:
           name: "run cypress test"
           command: npx cypress run
 
+workflows:
+  build:
+    jobs:
+      - cypress-test
+    
+
 # workflows:
 #   build:
 #     jobs:
