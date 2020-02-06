@@ -89,7 +89,5 @@ workflows:
         - run: npm install
       - cypress/run:
           executor: fasty
-          requires:
-            - cypress/install
           start: /bin/bash -c "lapis server"
           record: true
