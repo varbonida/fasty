@@ -86,7 +86,7 @@ workflows:
     jobs:
       - cypress/install:
           post-install:
-              - run: npm install
+            - run: npm install
           # name: "Cypress install"
           # steps:
           #   - checkout
@@ -111,6 +111,6 @@ workflows:
       - cypress/run:
           executor: fasty
           requires:
-            - Cypress install
+            - cypress/install
           start: /bin/bash -c "lapis server"
           record: true
