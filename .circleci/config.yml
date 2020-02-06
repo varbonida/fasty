@@ -21,5 +21,5 @@ jobs:
           command: /bin/bash -c "lapis server"
           background: true
       - run:
-        name: "cypress"
-        command: cypress run
+          name: "cypress"
+          command: cypress run
