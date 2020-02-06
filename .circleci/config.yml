@@ -84,30 +84,9 @@ executors:
 workflows:
   build:
     jobs:
-      - cypress/install:
-          post-install:
-            - run: npm install
-          # name: "Cypress install"
-          # steps:
-          #   - checkout
-          #   - restore_cache:
-          #       keys:
-          #       - cache-{{ .Branch }}-{{ checksum "package.json" }}
-          #   - run:
-          #       name: run npm install
-          #       command: npm install
-          #   - run:
-          #       command: npx cypress verify
-          #   - save_cache:
-          #       key: cache-{{ .Branch }}-{{ checksum "package.json" }}
-          #       paths:
-          #       - ~/.npm
-          #       - ~/.cache
-          #   - persist_to_workspace:
-          #       root: ~/
-          #       paths:
-          #       - project
-          #       - .cache/Cypress
+      - steps:
+        - checkout
+        - run: npm install
       - cypress/run:
           executor: fasty
           requires:
