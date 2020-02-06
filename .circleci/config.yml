@@ -25,4 +25,4 @@ jobs:
           background: true
       - run:
           name: "cypress"
-          command: cypress run
+          command: ./node_modules/.bin/cypress run
