@@ -40,7 +40,9 @@ jobs:
     executor:
       name: fasty
     steps:
-      - run: apt-get update -y && apt-get install -y xvfb
+      - run:
+          name: 'Install cypress dependencies' 
+          command: apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
       - checkout
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
 
@@ -48,7 +50,7 @@ jobs:
           key: dependencies-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
 
       - run: npm ci
-      - run: npm run cy:verify
+      - run: npx cypress verify
 
       - save_cache:
           key: dependencies-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
@@ -63,7 +65,7 @@ jobs:
 
       - run:
           name: 'Run Cypress tests'
-          command: npm run e2e:record -- --env circle=true
+          command: npx cypress run
           no_output_timeout: '1m'
       - store_artifacts:
           path: cypress\screenshots
