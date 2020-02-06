@@ -36,7 +36,7 @@ executors:
 workflows:
   build:
     jobs:
-      - cypress/run
+      - cypress/run:
           executor: fasty
           start: /bin/bash -c "lapis server"
 
