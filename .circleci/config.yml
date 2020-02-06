@@ -61,4 +61,7 @@ workflows:
   build:
     jobs:
       - cypress/run:
-          start: /bin/bash -c "lapis server"
+        executor: fasty
+        pre-steps:
+          - run: apt-get update -y && apt-get install -y xvfb
+          - run: /bin/bash -c "lapis server"
