@@ -8,13 +8,37 @@
 #       - cypress/run:
 #           executor: cypress/base-8
     
+# version: 2.1
+# orbs:
+#   cypress: cypress-io/cypress@1
+# jobs:
+#   build:
+#     docker:
+#       - image: solisoft/fasty
+#     steps:
+#       - checkout
+#       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
+#       - run:
+#           name: "start cms"
+#           command: /bin/bash -c "lapis server"
+#           background: true
+#       - run:
+#           name: "run cypress test"
+#           command: npx cypress run
+
 version: 2.1
 orbs:
   cypress: cypress-io/cypress@1
-jobs:
-  build:
+
+executors:
+  fasty:
     docker:
       - image: solisoft/fasty
+
+jobs:
+  cypress-test:
+    executor:
+      name: fasty
     steps:
       - checkout
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
@@ -25,15 +49,6 @@ jobs:
       - run:
           name: "run cypress test"
           command: npx cypress run
-
-# version: 2.1
-# orbs:
-#   cypress: cypress-io/cypress@1
-
-# executors:
-#   fasty:
-#     docker:
-#       - image: solisoft/fasty
 
 # workflows:
 #   build:
