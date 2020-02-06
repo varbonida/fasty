@@ -85,7 +85,7 @@ workflows:
   build:
     jobs:
       - cypress/install:
-          - post-install:
+          post-install:
               - run: npm install
           # name: "Cypress install"
           # steps:
