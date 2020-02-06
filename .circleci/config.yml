@@ -16,6 +16,9 @@ jobs:
     steps:
       - checkout
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
+      - run:
+          name: "install cypress"
+          command: npm install cypress
       - run: 
           name: "start cms"
           command: /bin/bash -c "lapis server"
