@@ -18,7 +18,7 @@ jobs:
     steps:
       - checkout
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
-      - run: 
+      - run:
           name: "start cms"
           command: /bin/bash -c "lapis server"
           background: true
