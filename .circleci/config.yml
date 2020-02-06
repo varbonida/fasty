@@ -35,33 +35,52 @@ executors:
     docker:
       - image: solisoft/fasty
 
-# jobs:
-#   cypress-test:
-#     executor:
-#       name: fasty
-#     steps:
-#       - checkout
-#       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
-#       - run:
-#           name: "start cms"
-#           command: /bin/bash -c "lapis server"
-#           background: true
-#       - run:
-#           name: "run cypress test"
-#           command: npx cypress run
+jobs:
+  cypress-test:
+    executor:
+      name: fasty
+    steps:
+      - run: apt-get update -y && apt-get install -y xvfb
+      - checkout
+      - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
+
+      - restore_cache:
+          key: dependencies-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+
+      - run: npm ci
+      - run: npm run cy:verify
+
+      - save_cache:
+          key: dependencies-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ~/.npm
+            - ~/.cache
+
+      - run:
+          name: 'Start cms'
+          command: /bin/bash -c "lapis server"
+          background: true
+
+      - run:
+          name: 'Run Cypress tests'
+          command: npm run e2e:record -- --env circle=true
+          no_output_timeout: '1m'
+      - store_artifacts:
+          path: cypress\screenshots
+      - store_artifacts:
+          path: cypress\videos
         
+workflows:
+  build:
+    jobs:
+      - cypress-test
+    
 
 # workflows:
 #   build:
 #     jobs:
-#       - cypress-test
-    
-
-workflows:
-  build:
-    jobs:
-      - cypress/run:
-        executor: fasty
-        pre-steps:
-          - run: apt-get update -y && apt-get install -y xvfb
-          - run: /bin/bash -c "lapis server"
+#       - cypress/run:
+#         executor: fasty
+#         pre-steps:
+#           - run: apt-get update -y && apt-get install -y xvfb
+#           - run: /bin/bash -c "lapis server"
