@@ -37,9 +37,7 @@ workflows:
   build:
     jobs:
       - cypress/run:
+          yarn: true
           executor: fasty
-          pre-steps:
-            - run: npm install
-            - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
           start: /bin/bash -c "lapis server"
           record: true
