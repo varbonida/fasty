@@ -36,9 +36,13 @@ executors:
 workflows:
   build:
     jobs:
+      - cypress/install
       - cypress/run:
+          requires:
+            - cypress/install
           executor: fasty
           start: /bin/bash -c "lapis server"
+          record: true
 
 
 # jobs:
