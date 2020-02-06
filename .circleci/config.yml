@@ -1,9 +1,25 @@
 #
-version: 2.1
-orbs:
-  cypress: cypress-io/cypress@1.0.0
-workflows:
+# version: 2.1
+# orbs:
+#   cypress: cypress-io/cypress@1.0.0
+# workflows:
+#   build:
+#     jobs:
+#       - cypress/run:
+#           executor: cypress/base-8
+    
+version: 2
+jobs:
   build:
-    jobs:
-      - cypress/run:
-          executor: cypress/base-8
+    docker:
+      - image: solisoft/fasty
+    steps:
+      - checkout
+      - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
+      - run: 
+          name: "start cms"
+          command: /bin/bash -c "lapis server"
+          background: true
+      - run:
+        name: "cypress"
+        command: cypress run
