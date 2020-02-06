@@ -17,7 +17,6 @@ install-dc: &install-dc
 prepare-db: &prepare-db
   name: Prepare DB
   command: |
-    echo 'db._createDatabase("db_demo");' | arangosh
     foxxy upgrade settings --server fasty --database db_demo
     foxxy upgrade --server fasty --database db_demo
     
