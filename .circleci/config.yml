@@ -8,7 +8,9 @@
 #       - cypress/run:
 #           executor: cypress/base-8
     
-version: 2
+version: 2.1
+orbs:
+  cypress: cypress-io/cypress@1
 jobs:
   build:
     docker:
@@ -16,13 +18,8 @@ jobs:
     steps:
       - checkout
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
-      - run:
-          name: "install cypress"
-          command: npm install cypress
       - run: 
           name: "start cms"
           command: /bin/bash -c "lapis server"
           background: true
-      - run:
-          name: "cypress"
-          command: ./node_modules/.bin/cypress run
+      - cypress/run
