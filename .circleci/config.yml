@@ -60,6 +60,4 @@ executors:
 workflows:
   build:
     jobs:
-      - cypress/run:
-          start: /bin/bash -c "lapis server"
-          record: true
+      - cypress/run
