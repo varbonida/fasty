@@ -30,7 +30,7 @@ jobs:
       - checkout
       # - setup_remote_docker
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
-      - run: /bin/bash -c "cd /var/www && lapis server"
+      - run: /bin/bash -c "lapis server"
       # - run: docker-compose build cms
       # - run: docker-compose run --rm cms moonc -w **/*.moon
       # - run: docker-compose up cms
