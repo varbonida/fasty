@@ -25,13 +25,13 @@ version: 2
 jobs:
   build:
     docker:
-      - image: solisoft/fasty
+      - image: varbonida/foxxy:0.3
     steps:
       # - run: echo -e "[server.foxxy]\nurl=http://localhost:8529\nusername=root\npassword=\n\n[server.fasty]\nurl=http://localhost:8530\nusername=root\npassword=password" >> ~/.foxxrc
       - checkout
       - setup_remote_docker
       - run: cp foxxy/app/js/config.js.sample foxxy/app/js/config.js
-      # - run: docker-compose build
+      - run: docker-compose build cms
       # - run: docker-compose run --rm cms moonc -w **/*.moon
       - run: docker-compose up cms
       - run: *prepare-db
